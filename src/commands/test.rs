@@ -10,5 +10,5 @@ pub struct TestCommand {
 }
 
 pub fn exec(root: &Cli, cmd: &Command) {
-    let command = cm3
+    todo!("Not implemented");
 }
