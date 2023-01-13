@@ -1,4 +1,4 @@
-use crate::commands::{Command};
+use crate::commands::Command;
 use clap::Parser;
 
 /// Description
@@ -14,6 +14,12 @@ pub struct Cli {
     pub commands: Command,
 }
 
-pub fn run() {
+/// Parses the command line arguments,
+/// and executes the matching subcommand
+pub fn run() -> Result<Cli, &'static str> {
     let cli = Cli::parse();
+    match cli.commands.exec(&cli) {
+        Ok(_) => Ok(cli),
+        Err(msg) => Err(msg),
+    }
 }
