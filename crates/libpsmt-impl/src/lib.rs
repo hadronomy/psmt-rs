@@ -4,30 +4,59 @@ use proc_macro::TokenStream;
 use quote::{quote};
 use syn::{self, parse_macro_input, Item};
 
+/// Implements `ExecutableCommand` to an **enum**.
+/// 
+/// This allows to execute an enumeration of
+/// subcommands by calling `my_enum.exec()`.
+/// 
+/// ```
+/// struct TestCommand;
+/// 
+/// // For `executable_cmd` to work 
+/// // exec needs to be implemented
+/// // in every subcommand
+/// impl TestCommand {
+///     pub fn exec(self) -> Result<(), &'static str> {
+///         todo!("Execute test command");
+///     }
+/// }
+/// 
+/// /// Subcommands enum used by the main clap
+/// /// command
+/// #[derive(Subcommand)]
+/// #[executable_cmd]
+/// enum Command {
+///     Test(TestCommand)
+/// }
+/// 
+/// fn run() -> Result<Cli, &'static str> {
+///     let cli = Cli::parse();
+///     // This will run the exec
+///     // that matches the enum value
+///     match cli.commands.exec() {
+///         Ok(_) => Ok(cli),
+///         Err(msg) => Err(msg),
+///     }
+///  }
+/// ```
+/// 
 #[proc_macro_attribute]
 pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as Item);
     impl_executable_cmd(&input)
 }
 
-// #ast
-// impl ExecutableCommand for #name {
-//     fn exec(&self) -> Result<(), &'static str> {
-//         match &self {
-//             #name::Test(cmd) => cmd.exec(),
-//         }
-//     }
-// }
-
+/// Implements the `executable_cmd` attribute macro
 fn impl_executable_cmd(input: &Item) -> TokenStream {
+    let name;
     let impl_matches = match &input {
         Item::Enum(e) => {
             // TODO: Check that the enum derives from Subcommand
+            name = &e.ident;
             let recurse = e.variants.iter().map(|variant| {
-                let enum_name = &e.ident;
                 let variant_name = &variant.ident;
                 quote! {
-                    #enum_name::#variant_name(cmd) => cmd.exec()
+                    #name::#variant_name(cmd) => cmd.exec()
                 }
             });
             recurse
@@ -36,7 +65,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
     };
     let gen = quote! {
         #input
-        impl ExecutableCommand for Command {
+        impl ExecutableCommand for #name {
             fn exec(&self) -> Result<(), &'static str> {
                 match &self {
                     #(#impl_matches,)*
