@@ -1,23 +1,46 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::quote;
-use syn;
+use quote::{quote, quote_spanned};
+use syn::{self, parse_macro_input, Item, spanned::Spanned};
 
 #[proc_macro_attribute]
-pub fn executable_cmd(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let ast = syn::parse(item).unwrap();
-    impl_executable_cmd(&attr, &ast)
+pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as Item);
+    impl_executable_cmd(&input)
 }
 
-fn impl_executable_cmd(_attr: &TokenStream, ast: &syn::DeriveInput) -> TokenStream {
-    let name = &ast.ident;
+// #ast
+// impl ExecutableCommand for #name {
+//     fn exec(&self) -> Result<(), &'static str> {
+//         match &self {
+//             #name::Test(cmd) => cmd.exec(),
+//         }
+//     }
+// }
+
+fn impl_executable_cmd(input: &Item) -> TokenStream {
+    let impl_matches = match &input {
+        Item::Enum(e) => {
+            let recurse = e.variants
+                .iter()
+                .map(|variant| {
+                    let enum_name = &e.ident;
+                    let variant_name = variant.ident.clone();
+                    quote_spanned! {
+                        variant.span() => #enum_name::#variant_name(cmd) => cmd.exec()
+                    }
+                });
+            recurse
+        },
+        _ => panic!("`executable_cmd` attribute can only be used in enums"),
+    };
     let gen = quote! {
-        #ast
-        impl ExecutableCommand for #name {
+        #input
+        impl ExecutableCommand for Command {
             fn exec(&self) -> Result<(), &'static str> {
                 match &self {
-                    #name::Test(cmd) => cmd.exec(),
+                    #(#impl_matches,)*
                 }
             }
         }
