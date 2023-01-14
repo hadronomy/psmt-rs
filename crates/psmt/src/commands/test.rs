@@ -1,4 +1,3 @@
-use crate::cli::Cli;
 use clap::Parser;
 
 #[derive(Parser, Clone, Copy)]
@@ -9,7 +8,7 @@ pub struct TestCommand {
 }
 
 impl TestCommand {
-    pub fn exec(self, _root: &Cli) -> Result<(), &'static str> {
+    pub fn exec(self) -> Result<(), &'static str> {
         todo!("Execute test command");
     }
 }

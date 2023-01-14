@@ -1,5 +1,6 @@
 use crate::commands::Command;
 use clap::Parser;
+use libpsmt::ExecutableCommand;
 
 /// Description
 #[derive(Parser)]
@@ -18,7 +19,7 @@ pub struct Cli {
 /// and executes the matching subcommand
 pub fn run() -> Result<Cli, &'static str> {
     let cli = Cli::parse();
-    match cli.commands.exec(&cli) {
+    match cli.commands.exec() {
         Ok(_) => Ok(cli),
         Err(msg) => Err(msg),
     }
