@@ -1,8 +1,8 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::{quote, quote_spanned};
-use syn::{self, parse_macro_input, spanned::Spanned, Item};
+use quote::{quote};
+use syn::{self, parse_macro_input, Item};
 
 #[proc_macro_attribute]
 pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
@@ -26,8 +26,8 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
             let recurse = e.variants.iter().map(|variant| {
                 let enum_name = &e.ident;
                 let variant_name = &variant.ident;
-                quote_spanned! {
-                    variant.span() => #enum_name::#variant_name(cmd) => cmd.exec()
+                quote! {
+                    #enum_name::#variant_name(cmd) => cmd.exec()
                 }
             });
             recurse
