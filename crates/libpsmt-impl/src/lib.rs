@@ -2,7 +2,7 @@ extern crate proc_macro;
 
 use proc_macro::TokenStream;
 use quote::{quote, quote_spanned};
-use syn::{self, parse_macro_input, Item, spanned::Spanned};
+use syn::{self, parse_macro_input, spanned::Spanned, Item};
 
 #[proc_macro_attribute]
 pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
@@ -22,17 +22,16 @@ pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
 fn impl_executable_cmd(input: &Item) -> TokenStream {
     let impl_matches = match &input {
         Item::Enum(e) => {
-            let recurse = e.variants
-                .iter()
-                .map(|variant| {
-                    let enum_name = &e.ident;
-                    let variant_name = variant.ident.clone();
-                    quote_spanned! {
-                        variant.span() => #enum_name::#variant_name(cmd) => cmd.exec()
-                    }
-                });
+            // TODO: Check that the enum derives from Subcommand
+            let recurse = e.variants.iter().map(|variant| {
+                let enum_name = &e.ident;
+                let variant_name = &variant.ident;
+                quote_spanned! {
+                    variant.span() => #enum_name::#variant_name(cmd) => cmd.exec()
+                }
+            });
             recurse
-        },
+        }
         _ => panic!("`executable_cmd` attribute can only be used in enums"),
     };
     let gen = quote! {
