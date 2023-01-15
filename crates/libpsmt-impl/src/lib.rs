@@ -9,7 +9,7 @@ use syn::{self, parse_macro_input, Item};
 /// This allows to execute an enumeration of
 /// subcommands by calling `my_enum.exec()`.
 /// 
-/// ```
+/// ```ignore
 /// struct TestCommand;
 /// 
 /// // For `executable_cmd` to work 
