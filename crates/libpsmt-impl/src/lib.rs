@@ -68,7 +68,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
         impl ExecutableCommand for #name {
             fn exec(&self) -> Result<(), &'static str> {
                 match &self {
-                    #(#impl_matches,)*
+                    #(#impl_matches),*
                 }
             }
         }
