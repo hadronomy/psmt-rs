@@ -1,26 +1,27 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::{quote};
+use proc_macro_error::{abort_call_site, proc_macro_error};
+use quote::quote;
 use syn::{self, parse_macro_input, Item};
 
 /// Implements `ExecutableCommand` to an **enum**.
-/// 
+///
 /// This allows to execute an enumeration of
 /// subcommands by calling `my_enum.exec()`.
-/// 
+///
 /// ```ignore
 /// struct TestCommand;
-/// 
-/// // For `executable_cmd` to work 
+///
+/// // For `executable_cmd` to work
 /// // exec needs to be implemented
 /// // in every subcommand
 /// impl TestCommand {
-///     pub fn exec(self) -> Result<(), &'static str> {
+///     pub fn exec(&self) -> Result<(), &'static str> {
 ///         todo!("Execute test command");
 ///     }
 /// }
-/// 
+///
 /// /// Subcommands enum used by the main clap
 /// /// command
 /// #[derive(Subcommand)]
@@ -28,7 +29,7 @@ use syn::{self, parse_macro_input, Item};
 /// enum Command {
 ///     Test(TestCommand)
 /// }
-/// 
+///
 /// fn run() -> Result<Cli, &'static str> {
 ///     let cli = Cli::parse();
 ///     // This will run the exec
@@ -39,8 +40,9 @@ use syn::{self, parse_macro_input, Item};
 ///     }
 ///  }
 /// ```
-/// 
+///
 #[proc_macro_attribute]
+#[proc_macro_error]
 pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as Item);
     impl_executable_cmd(&input)
@@ -61,7 +63,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
             });
             recurse
         }
-        _ => panic!("`executable_cmd` attribute can only be used in enums"),
+        _ => abort_call_site!("`executable_cmd` attribute can only be used in enums"),
     };
     let gen = quote! {
         #input
