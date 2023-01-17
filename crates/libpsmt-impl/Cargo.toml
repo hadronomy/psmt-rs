@@ -14,3 +14,4 @@ syn = { version = "1.0.107", features = ["full"] }
 
 [dev-dependencies]
 trybuild = "1.0.75"
+

@@ -6,3 +6,4 @@ edition = "2021"
 
 [dependencies]
 libpsmt-impl = { version = "0.1.0", path = "../libpsmt-impl" }
+thiserror = "1.0.38"
