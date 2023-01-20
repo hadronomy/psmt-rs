@@ -4,11 +4,10 @@ orbs:
   rust: circleci/rust@1.6.0
 
 workflows:
-  version: 2
   build:
     jobs:
       - rust/lint-test-build:
-        release: true
-        clippy_arguments: "clippy --locked -- -D warnings"
+          release: true
+          clippy_arguments: '--locked -- -D warnings'
 
 # TODO: Custom docker image
