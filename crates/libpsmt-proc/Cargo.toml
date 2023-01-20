@@ -1,5 +1,5 @@
 [package]
-name = "libpsmt-impl"
+name = "libpsmt-proc"
 authors = [ "Pablo Hernandez (@Hadronomy)" ]
 version = "0.1.0"
 edition = "2021"

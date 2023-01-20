@@ -2,4 +2,10 @@
 members = ["crates/*"]
 
 [profile.release]
-lto = true
+debug = 1
+incremental = true
+# This is set to true in CI
+lto = false
+
+[profile.dev.package.backtrace]
+opt-level = 3

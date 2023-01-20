@@ -1,6 +1,11 @@
+//! Contains the cli definition
+
 use crate::commands::Command;
+use eyre::{Result, Context};
 use clap::Parser;
-use libpsmt::{Error, ExecutableCommand};
+use libpsmt::ExecutableCommand;
+
+// TODO: Override default help
 
 /// Description
 #[derive(Parser)]
@@ -17,8 +22,9 @@ pub struct Cli {
 
 /// Parses the command line arguments,
 /// and executes the matching subcommand
-pub fn run() -> Result<Cli, Error> {
+pub fn run() -> Result<Cli> {
     let cli = Cli::parse();
-    let _ = cli.commands.exec()?;
+    cli.commands.exec()
+        .wrap_err("Failed to execute command")?;
     Ok(cli)
 }

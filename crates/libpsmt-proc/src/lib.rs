@@ -68,7 +68,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
     let gen = quote! {
         #input
         impl ExecutableCommand for #name {
-            fn exec(&self) -> Result<(), libpsmt::Error> {
+            fn exec(&self) -> eyre::Result<()> {
                 match &self {
                     #(#impl_matches),*
                 }
