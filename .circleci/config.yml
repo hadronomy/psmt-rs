@@ -9,5 +9,6 @@ workflows:
       - rust/lint-test-build:
           release: true
           clippy_arguments: '--locked -- -D warnings'
+          version: 1.66.1
 
 # TODO: Custom docker image
