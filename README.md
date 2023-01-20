@@ -1,9 +1,9 @@
-<html>
-    <p style="font-size: 4em" align=center>PSMT</p>
-    <h2 align=center>Pleeease save my time</h4>
-</html>
 
------
+<h1 align=center>PSMT</h1>
+<div align=center>Pleeease save my time</div>
+
+<span></span>
+
 [![][github-badge]][github-url]
 [![][cargo-badge]][cargo-url]
 [![][docs-badge]][docs-url]
