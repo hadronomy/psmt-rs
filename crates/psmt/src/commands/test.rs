@@ -4,9 +4,9 @@ use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
 
-use eyre::{Result, Context};
 use clap::Parser;
 use colored::Colorize;
+use eyre::{Context, Result};
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, RemoteCallbacks};
 use indicatif::{MultiProgress, ProgressBar, ProgressState, ProgressStyle};
@@ -23,8 +23,10 @@ impl TestCommand {
     pub fn exec(&self) -> Result<()> {
         let multiprogress = Arc::new(MultiProgress::new());
         let spinner = multiprogress.add(ProgressBar::new_spinner());
-        spinner.set_style(ProgressStyle::with_template("{spinner:.cyan/} {msg}")
-                .wrap_err("Failed to create template style")?);
+        spinner.set_style(
+            ProgressStyle::with_template("{spinner:.cyan/} {msg}")
+                .wrap_err("Failed to create template style")?,
+        );
         spinner.set_message("Cloning repo");
         spinner.enable_steady_tick(Duration::from_millis(100));
         let progress_bar = multiprogress.add(ProgressBar::new(0));
@@ -39,7 +41,7 @@ impl TestCommand {
             progress_bar.set_position(stats.received_objects() as u64);
             true
         });
-        let pwd = env::current_dir().wrap_err("Current working directory")?;
+        let pwd = env::current_dir().wrap_err("Failed to obtain current working directory")?;
         let psmt_dir = Path::new(pwd.as_os_str()).join(".psmt");
         let repo_dir = psmt_dir.join("template");
         let checkout_builder = CheckoutBuilder::new();

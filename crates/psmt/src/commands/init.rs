@@ -1,5 +1,5 @@
-use eyre::Result;
 use clap::Parser;
+use eyre::Result;
 
 #[derive(Parser, Debug)]
 #[command()]
