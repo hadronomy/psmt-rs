@@ -1,23 +1,55 @@
 //! Contains the cli definition
 
-use crate::commands::Command;
+use crate::commands::{Command};
 use clap::Parser;
 use eyre::{Context, Result};
 use libpsmt::ExecutableCommand;
 
 // TODO: Override default help
 
+use colored::{Colorize};
+
+// TODO: Refactor to use owo_colors instead of colored
+
+pub fn get_help_template() -> String {
+    let template = format!(
+        "\
+{usage_title}
+
+  {arrow} {{usage}}
+
+{about_title}
+
+  {{about}}
+
+{commands_title}
+
+{{subcommands}}
+
+{args_title}
+
+{{options}}
+",
+        arrow = "❯".bold().green(),
+        usage_title = " USAGE         ".bold().on_cyan(),
+        about_title = " DESCRIPTION   ".bold().on_cyan(),
+        commands_title = " COMMANDS      ".bold().on_cyan(),
+        args_title = " ARGUMENTS   ".bold().on_cyan(),
+    );
+    template
+}
+
 /// Description
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
-#[command(next_line_help = false)]
+#[command(help_template = get_help_template())]
 pub struct Cli {
     /// Enables debugging
     #[arg(short, long)]
-    pub debug: bool,
+    debug: bool,
 
     #[command(subcommand)]
-    pub commands: Command,
+    commands: Command,
 }
 
 /// Parses the command line arguments,
