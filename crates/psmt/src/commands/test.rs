@@ -5,7 +5,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use clap::Parser;
-use colored::Colorize;
+use owo_colors::{OwoColorize};
 use eyre::{Context, Result};
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, RemoteCallbacks};

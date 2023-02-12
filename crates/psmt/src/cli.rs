@@ -7,11 +7,9 @@ use libpsmt::ExecutableCommand;
 
 // TODO: Override default help
 
-use colored::{Colorize};
+use owo_colors::{OwoColorize};
 
-// TODO: Refactor to use owo_colors instead of colored
-
-pub fn get_help_template() -> String {
+pub fn _get_help_template() -> String {
     let template = format!(
         "\
 {usage_title}
@@ -31,10 +29,10 @@ pub fn get_help_template() -> String {
 {{options}}
 ",
         arrow = "❯".bold().green(),
-        usage_title = " USAGE         ".bold().on_cyan(),
-        about_title = " DESCRIPTION   ".bold().on_cyan(),
-        commands_title = " COMMANDS      ".bold().on_cyan(),
-        args_title = " ARGUMENTS   ".bold().on_cyan(),
+        usage_title = " USAGE         ".bold().on_blue(),
+        about_title = " DESCRIPTION   ".bold().on_blue(),
+        commands_title = " COMMANDS      ".bold().on_blue(),
+        args_title = " ARGUMENTS   ".bold().on_blue(),
     );
     template
 }
@@ -42,7 +40,7 @@ pub fn get_help_template() -> String {
 /// Description
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
-#[command(help_template = get_help_template())]
+// #[command(help_template = get_help_template())]
 pub struct Cli {
     /// Enables debugging
     #[arg(short, long)]
