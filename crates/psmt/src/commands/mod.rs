@@ -1,7 +1,6 @@
 use clap::Subcommand;
 use libpsmt::{executable_cmd, ExecutableCommand};
 
-
 use self::init::InitCommand;
 use self::test::TestCommand;
 

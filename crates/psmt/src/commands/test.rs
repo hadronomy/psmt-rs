@@ -5,12 +5,12 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use clap::Parser;
-use owo_colors::{OwoColorize};
 use eyre::{Context, Result};
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, RemoteCallbacks};
 use indicatif::{MultiProgress, ProgressBar, ProgressState, ProgressStyle};
 use libpsmt::Error;
+use owo_colors::OwoColorize;
 
 #[derive(Parser, Debug)]
 #[command()]

@@ -1,13 +1,13 @@
 //! Contains the cli definition
 
-use crate::commands::{Command};
+use crate::commands::Command;
 use clap::Parser;
 use eyre::{Context, Result};
 use libpsmt::ExecutableCommand;
 
 // TODO: Override default help
 
-use owo_colors::{OwoColorize};
+use owo_colors::OwoColorize;
 
 pub fn _get_help_template() -> String {
     let template = format!(

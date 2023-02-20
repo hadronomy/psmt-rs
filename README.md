@@ -26,11 +26,11 @@ A **cli utility** to finally save your time written in Rust 🦀
 ## Install
 
 ```bash
-$ cargo install psmt
+cargo install psmt
 ```
 
 ## Run
 
 ```bash
-$ psmt --help
+psmt --help
 ```

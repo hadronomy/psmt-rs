@@ -5,8 +5,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+config = "0.13.3"
 eyre = "0.6.8"
 git2 = "0.16.0"
 libpsmt-proc = { version = "0.1.0", path = "../libpsmt-proc" }
+serde = "1.0.152"
 termination = "0.1.2"
 thiserror = "1.0.38"
+toml = "0.7.2"
