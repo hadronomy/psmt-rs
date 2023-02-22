@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
 
 use clap::Parser;
 use eyre::Result;
@@ -9,7 +10,10 @@ use libpsmt::ProjectConfig;
 /// in the current directory
 #[derive(Parser, Debug)]
 #[command()]
-pub struct InitCommand {}
+pub struct InitCommand {
+    #[arg(value_name = "project_dir", default_value_t = String::from("."), required = false)]
+    project_directory: String,
+}
 
 impl InitCommand {
     pub fn exec(&self) -> Result<()> {
@@ -20,7 +24,8 @@ impl InitCommand {
         // Ask using inquire crate for the basic info
         // => Design configuration structure
         let config = ProjectConfig::get_default().serialize()?;
-        let mut config_file = File::create("psmt.toml")?;
+        let config_path = Path::new(&self.project_directory).join("psmt.toml");
+        let mut config_file = File::create(config_path)?;
         config_file.write_all(config.as_bytes())?;
         Ok(())
     }
