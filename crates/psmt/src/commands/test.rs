@@ -1,3 +1,5 @@
+#![cfg(profile = "dev")]
+
 use std::env;
 use std::fmt::Write;
 use std::path::Path;

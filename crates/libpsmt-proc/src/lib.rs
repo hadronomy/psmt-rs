@@ -2,7 +2,7 @@ extern crate proc_macro;
 
 use proc_macro::TokenStream;
 use proc_macro_error::{abort_call_site, proc_macro_error};
-use quote::quote;
+use quote::{quote};
 use syn::{self, parse_macro_input, Item};
 
 /// Implements `ExecutableCommand` to an **enum**.
@@ -57,7 +57,14 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
             name = &e.ident;
             let recurse = e.variants.iter().map(|variant| {
                 let variant_name = &variant.ident;
+                let attributes = variant.attrs.iter().filter(|attr| {
+                    let cfg_attr = attr.path.segments.iter().find(|element| {
+                        element.ident == "cfg"
+                    });
+                    cfg_attr.is_some()
+                });
                 quote! {
+                    #(#attributes)*
                     #name::#variant_name(cmd) => cmd.exec()
                 }
             });
