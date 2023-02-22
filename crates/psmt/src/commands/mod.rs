@@ -10,10 +10,6 @@ pub mod test;
 #[derive(Subcommand)]
 #[executable_cmd]
 pub enum Command {
-    /// Test command
     Test(TestCommand),
-
-    /// Initialize a new psmt project
-    /// in the current directory
     Init(InitCommand),
 }

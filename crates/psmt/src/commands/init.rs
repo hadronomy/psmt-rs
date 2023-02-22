@@ -5,6 +5,8 @@ use clap::Parser;
 use eyre::Result;
 use libpsmt::ProjectConfig;
 
+/// Initialize a new psmt project
+/// in the current directory
 #[derive(Parser, Debug)]
 #[command()]
 pub struct InitCommand {}
