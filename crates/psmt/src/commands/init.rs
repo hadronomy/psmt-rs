@@ -20,7 +20,7 @@ impl ExecutableCommand for InitCommand {
         // todo!("Not implemented")
         // TODO:
         // Check if psmt is already initialized
-        // Show emoji message saying with an error
+        // Show emoji message with an error
         // Ask using inquire crate for the basic info
         // => Design configuration structure
         let config = ProjectConfig::get_default().serialize()?;
