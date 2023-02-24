@@ -19,7 +19,7 @@ pub enum Error {
     #[error("Invalid Argument: `{0}`")]
     InvalidArgument(String),
 
-    #[error(transparent)]
+    #[error("Invalid Config: `{0}`")]
     Config(#[from] ConfigError),
 
     #[error(transparent)]

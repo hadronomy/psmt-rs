@@ -4,7 +4,7 @@ use std::path::Path;
 
 use clap::Parser;
 use eyre::Result;
-use libpsmt::{ProjectConfig, ExecutableCommand};
+use libpsmt::{ExecutableCommand, ProjectConfig};
 
 /// Initialize a new psmt project
 /// in the current directory
@@ -23,7 +23,10 @@ impl ExecutableCommand for InitCommand {
         // Show emoji message with an error
         // Ask using inquire crate for the basic info
         // => Design configuration structure
-        let config = ProjectConfig::get_default().serialize()?;
+        // TODO: Handle config errors gracefully
+        let current_config = ProjectConfig::read()?;
+        println!("{:?}", current_config);
+        let config = ProjectConfig::default().write()?;
         let config_path = Path::new(&self.project_directory).join("psmt.toml");
         let mut config_file = File::create(config_path)?;
         config_file.write_all(config.as_bytes())?;
