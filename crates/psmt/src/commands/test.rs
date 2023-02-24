@@ -1,4 +1,4 @@
-#![cfg(profile = "dev")]
+#![cfg(debug_assertions)]
 
 use std::env;
 use std::fmt::Write;
