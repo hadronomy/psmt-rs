@@ -4,7 +4,7 @@ use std::path::Path;
 
 use clap::Parser;
 use eyre::Result;
-use libpsmt::ProjectConfig;
+use libpsmt::{ProjectConfig, ExecutableCommand};
 
 /// Initialize a new psmt project
 /// in the current directory
@@ -15,8 +15,8 @@ pub struct InitCommand {
     project_directory: String,
 }
 
-impl InitCommand {
-    pub fn exec(&self) -> Result<()> {
+impl ExecutableCommand for InitCommand {
+    fn exec(&self) -> Result<()> {
         // todo!("Not implemented")
         // TODO:
         // Check if psmt is already initialized

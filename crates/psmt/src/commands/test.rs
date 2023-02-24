@@ -11,7 +11,7 @@ use eyre::{Context, Result};
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, RemoteCallbacks};
 use indicatif::{MultiProgress, ProgressBar, ProgressState, ProgressStyle};
-use libpsmt::Error;
+use libpsmt::{Error, ExecutableCommand};
 use owo_colors::OwoColorize;
 
 #[derive(Parser, Debug)]
@@ -21,8 +21,8 @@ pub struct TestCommand {
     repository: String,
 }
 
-impl TestCommand {
-    pub fn exec(&self) -> Result<()> {
+impl ExecutableCommand for TestCommand {
+    fn exec(&self) -> Result<()> {
         let multiprogress = Arc::new(MultiProgress::new());
         let spinner = multiprogress.add(ProgressBar::new_spinner());
         spinner.set_style(
