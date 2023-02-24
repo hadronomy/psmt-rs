@@ -1,7 +1,7 @@
 [hooks]
 # TODO: Wait for 0.12 update on rusty-hook
 # pre-commit = ["cargo clippy --locked -- -D warnings", "cargo fmt -- --check"]
-pre-commit = "cargo clippy --locked -- -D warnings"
+pre-commit = "just check"
 
 [logging]
 verbose = true
