@@ -1,3 +1,5 @@
+//! Subcommand implementations
+
 use clap::Subcommand;
 use libpsmt::ExecutableCommand;
 
