@@ -46,14 +46,15 @@ pub struct Cli {
     #[arg(short, long)]
     debug: bool,
 
+    /// The inputted cli subcommand
     #[command(subcommand)]
-    commands: Command,
+    command: Command,
 }
 
 /// Parses the command line arguments,
 /// and executes the matching subcommand
 pub fn run() -> Result<Cli> {
     let cli = Cli::parse();
-    cli.commands.exec().wrap_err("Failed to execute command")?;
+    cli.command.exec().wrap_err("Failed to execute command")?;
     Ok(cli)
 }
