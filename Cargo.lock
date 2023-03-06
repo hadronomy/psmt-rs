@@ -614,7 +614,8 @@ dependencies = [
  "serde",
  "termination",
  "thiserror",
- "toml 0.7.3",
+ "toml 0.7.2",
+ "toml_edit",
 ]
 
 [[package]]
@@ -1190,9 +1191,9 @@ dependencies = [
 
 [[package]]
 name = "toml_edit"
-version = "0.19.6"
+version = "0.19.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08de71aa0d6e348f070457f85af8bd566e2bc452156a423ddf22861b3a953fae"
+checksum = "9a1eb0622d28f4b9c90adc4ea4b2b46b47663fde9ac5fafcb14a1369d5508825"
 dependencies = [
  "indexmap",
  "serde",
@@ -1458,6 +1459,15 @@ name = "winnow"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ee7b2c67f962bf5042bfd8b6a916178df33a26eec343ae064cb8e069f638fa6f"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
+name = "winnow"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c95fb4ff192527911dd18eb138ac30908e7165b8944e528b6af93aa4c842d345"
 dependencies = [
  "memchr",
 ]
