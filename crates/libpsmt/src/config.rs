@@ -59,16 +59,12 @@ impl ProjectConfig {
     }
 
     pub fn read() -> Result<ProjectConfig, Error> {
-        match ProjectConfig::build()?.try_deserialize::<ProjectConfig>() {
-            Ok(config) => Ok(config),
-            Err(error) => Err(Error::Config(error)),
-        }
+        ProjectConfig::build()?
+            .try_deserialize::<ProjectConfig>()
+            .map_err(Error::Config)
     }
 
     pub fn to_string(&self) -> Result<String, Error> {
-        match toml::to_string(&self) {
-            Ok(text) => Ok(text),
-            Err(error) => Err(Error::Other(error.into())),
-        }
+        toml::to_string(&self).map_err(|err| Error::Other(err.into()))
     }
 }
