@@ -7,14 +7,14 @@ use syn::{self, parse_macro_input, Item};
 
 /// Implements `ExecutableCommand` to an **enum**.
 ///
-/// This allows to execute an enumeration of
-/// subcommands by calling `my_enum.exec()`.
+/// This allows to execute a specific subcommand
+/// by calling `my_subcommand_enum.exec()`.
 ///
 /// ```ignore
 /// struct TestCommand;
 ///
 /// // For `executable_cmd` to work
-/// // exec needs to be implemented
+/// // the trait ExecutableCommand needs to be implemented
 /// // in every subcommand
 /// impl TestCommand {
 ///     pub fn exec(&self) -> Result<(), &'static str> {
@@ -24,8 +24,7 @@ use syn::{self, parse_macro_input, Item};
 ///
 /// /// Subcommands enum used by the main clap
 /// /// command
-/// #[derive(Subcommand)]
-/// #[executable_cmd]
+/// #[derive(Subcommand, ExecutableCommand)]
 /// enum Command {
 ///     Test(TestCommand)
 /// }
@@ -41,10 +40,10 @@ use syn::{self, parse_macro_input, Item};
 ///  }
 /// ```
 ///
-#[proc_macro_attribute]
+#[proc_macro_derive(ExecutableCommand)]
 #[proc_macro_error]
-pub fn executable_cmd(_args: TokenStream, input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as Item);
+pub fn executable_cmd_derive(item: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(item as Item);
     impl_executable_cmd(&input)
 }
 
@@ -57,16 +56,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
             name = &e.ident;
             e.variants.iter().map(|variant| {
                 let variant_name = &variant.ident;
-                let attributes = variant.attrs.iter().filter(|attr| {
-                    let cfg_attr = attr
-                        .path
-                        .segments
-                        .iter()
-                        .find(|element| element.ident == "cfg");
-                    cfg_attr.is_some()
-                });
                 quote! {
-                    #(#attributes)*
                     #name::#variant_name(cmd) => cmd.exec()
                 }
             })
@@ -74,7 +64,6 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
         _ => abort_call_site!("`executable_cmd` attribute can only be used in enums"),
     };
     let gen = quote! {
-        #input
         impl ExecutableCommand for #name {
             fn exec(&self) -> eyre::Result<()> {
                 match &self {
