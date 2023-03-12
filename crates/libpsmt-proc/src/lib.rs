@@ -47,7 +47,7 @@ pub fn executable_cmd_derive(item: TokenStream) -> TokenStream {
     impl_executable_cmd(&input)
 }
 
-/// Implements the `executable_cmd` attribute macro
+/// Implements the `ExecutableCommand` derive macro
 fn impl_executable_cmd(input: &Item) -> TokenStream {
     let name;
     let impl_matches = match &input {
