@@ -55,7 +55,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
         Item::Enum(e) => {
             // TODO: Check that the enum derives from Subcommand
             name = &e.ident;
-            let recurse = e.variants.iter().map(|variant| {
+            e.variants.iter().map(|variant| {
                 let variant_name = &variant.ident;
                 let attributes = variant.attrs.iter().filter(|attr| {
                     let cfg_attr = attr
@@ -69,8 +69,7 @@ fn impl_executable_cmd(input: &Item) -> TokenStream {
                     #(#attributes)*
                     #name::#variant_name(cmd) => cmd.exec()
                 }
-            });
-            recurse
+            })
         }
         _ => abort_call_site!("`executable_cmd` attribute can only be used in enums"),
     };
